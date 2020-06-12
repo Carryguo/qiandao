@@ -1,0 +1,72 @@
+/* pages/ziliao/index.wxss */
+.page {
+  display: block;
+  min-height: 100%;
+  width: 100%;
+  position: absolute;
+  left: 0;
+  top: 0;
+  /* z-index: 1; */
+}
+.xinxi{
+  margin: 0 auto;
+  text-align: center;
+  margin-top: 20rpx;
+}
+/* pages/mine/mate_selection_data/mate_selection_data.wxss */
+page{background: #F6F6F6}
+.chunk-box{
+  width: 94%;
+  margin: auto;
+  margin-top: 80%;
+  border-radius: 20rpx;
+  overflow: hidden;
+  background: #fff;
+}
+.chunk{
+  width: 92%;
+  height: 100rpx;
+  margin: auto;
+  background: #fff;
+  font-size: 28rpx;
+  color: #000000;
+  line-height: 100rpx;
+  border-bottom: 1px solid rgba(239,239,239,1);
+}
+.chunk-box .chunk:last-child{
+  border: none
+}
+.chunk .fa-chevron-right{
+  font-size: 22rpx;
+}
+.foot-btn{
+  width: 94%;
+  height: 80rpx;
+  
+  box-shadow:0px 1rpx 5rpx 0px rgba(0, 0, 0, 0.1);
+  border-radius:40rpx;
+  text-align: center;
+  line-height: 80rpx;
+  /* font-size: 30rpx; */
+  font-size: 32rpx;
+  font-weight: bold;
+  margin: auto;
+  margin-top: 80rpx;
+}
+.authen-ipt{
+  display: block;
+  border: none;
+  outline: none;
+  background: none;
+  line-height: 50rpx;
+  height: 50rpx;
+  margin-top: 25rpx;
+  float: right;
+  width: auto;
+  text-align: right;
+}
+.chunk i.cf{
+  float: right;
+  height: 50rpx;
+  margin-top: 25rpx;
+}

@@ -1,0 +1,264 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.fh.mapper.dsno1.qd.ActivityMapper">
+	
+	<!--表名 -->
+	<sql id="tableName">
+		QD_ACTIVITY
+	</sql>
+	
+	<!--数据字典表名 -->
+	<sql id="dicTableName">
+		SYS_DICTIONARIES
+	</sql>
+	
+	<!-- 字段 -->
+	<sql id="Field">
+		f.NAME,	
+		f.DAYTIME,
+		f.STARTTIME,	
+		f.ENDTIME,	
+		f.LIMITCOUNT,	
+		f.ADDRESS,	
+		f.DESCRIBES,	
+		f.STATE,	
+		f.SHOWSET,	
+		f.BGIMG,	
+		f.ERCODE,	
+		f.CREATETIME,
+		f.CREATOR,
+		f.CHECKTYPE,
+		f.FONTCOLOR,
+		f.BUTTONCOLOR,
+		f.ACTIVITY_ID
+	</sql>
+	
+	<!-- 字段用于新增 -->
+	<sql id="Field2">
+		NAME,	
+		DAYTIME,
+		STARTTIME,	
+		ENDTIME,	
+		LIMITCOUNT,	
+		ADDRESS,	
+		DESCRIBES,	
+		STATE,	
+		SHOWSET,	
+		BGIMG,	
+		ERCODE,	
+		CREATETIME,
+		CREATOR,
+		CHECKTYPE,
+		FONTCOLOR,
+		BUTTONCOLOR,
+		ACTIVITY_ID
+	</sql>
+	
+	<!-- 字段值 -->
+	<sql id="FieldValue">
+		#{NAME},	
+		#{DAYTIME},
+		#{STARTTIME},	
+		#{ENDTIME},	
+		#{LIMITCOUNT},	
+		#{ADDRESS},	
+		#{DESCRIBES},	
+		#{STATE},	
+		#{SHOWSET},	
+		#{BGIMG},	
+		#{ERCODE},	
+		#{CREATETIME},
+		#{CREATOR},
+		#{CHECKTYPE},
+		#{FONTCOLOR},
+		#{BUTTONCOLOR},
+		#{ACTIVITY_ID}
+	</sql>
+	
+	<!-- 新增-->
+	<insert id="save" parameterType="pd">
+		insert into 
+	<include refid="tableName"></include>
+		(
+	<include refid="Field2"></include>
+		) values (
+	<include refid="FieldValue"></include>
+		)
+	</insert>
+	
+	<!-- 删除-->
+	<delete id="delete" parameterType="pd">
+		update
+		<include refid="tableName"></include>
+		set STATE = -1
+		where 
+			ACTIVITY_ID = #{ACTIVITY_ID}
+	</delete>
+	
+	<!-- 修改 -->
+	<update id="edit" parameterType="pd">
+		update
+		<include refid="tableName"></include>
+		set 
+		<if test="NAME != null and NAME != ''">
+			NAME = #{NAME},
+		</if>
+		<if test="DAYTIME != null and DAYTIME != ''">
+			DAYTIME = #{DAYTIME},
+		</if>
+		<if test="STARTTIME != null and STARTTIME != ''">
+			STARTTIME = #{STARTTIME},
+		</if>
+		<if test="ENDTIME != null and ENDTIME != ''">
+			ENDTIME = #{ENDTIME},
+		</if>
+		<if test="LIMITCOUNT != null">
+			LIMITCOUNT = #{LIMITCOUNT},
+		</if>
+		<if test="ADDRESS != null and ADDRESS != ''">
+			ADDRESS = #{ADDRESS},
+		</if>
+		<if test="DESCRIBES != null and DESCRIBES != ''">
+			DESCRIBES = #{DESCRIBES},
+		</if>
+		<if test="STATE != null">
+			STATE = #{STATE},
+		</if>
+		<if test="SHOWSET != null">
+			SHOWSET = #{SHOWSET},
+		</if>
+		<if test="BGIMG != null and BGIMG != ''">
+			BGIMG = #{BGIMG},
+		</if>
+		<if test="ERCODE != null and ERCODE != ''">
+			ERCODE = #{ERCODE},
+		</if>
+		<if test="CHECKTYPE != null">
+			CHECKTYPE = #{CHECKTYPE},
+		</if>
+		<if test="FONTCOLOR != null and FONTCOLOR != ''">
+			FONTCOLOR = #{FONTCOLOR},
+		</if>
+		<if test="BUTTONCOLOR != null and BUTTONCOLOR != ''">
+			BUTTONCOLOR = #{BUTTONCOLOR},
+		</if>
+			ACTIVITY_ID = ACTIVITY_ID
+		where 
+			ACTIVITY_ID = #{ACTIVITY_ID}
+	</update>
+	
+	<!-- 通过ID获取数据 -->
+	<select id="findById" parameterType="pd" resultType="pd">
+		select 
+		<include refid="Field"></include>
+		from 
+		<include refid="tableName"></include> f
+		where 
+			f.ACTIVITY_ID = #{ACTIVITY_ID}
+	</select>
+	
+	<!-- 列表 -->
+	<select id="datalistPage" parameterType="page" resultType="pd">
+		select
+		<include refid="Field"></include>
+		from 
+		<include refid="tableName"></include> f
+		where 1=1 and STATE != -1
+		<if test="pd.KEYWORDS != null and pd.KEYWORDS != ''"><!-- 关键词检索 -->
+			and (NAME LIKE CONCAT(CONCAT('%', #{pd.KEYWORDS}),'%'))
+		</if>
+		<if test="pd.CREATOR != null and pd.CREATOR != ''">
+			and CREATOR = #{pd.CREATOR}
+		</if>
+		order by f.CREATETIME desc
+	</select>
+	
+	<!-- 列表(全部) -->
+	<select id="listAll" parameterType="pd" resultType="pd">
+		select
+		<include refid="Field"></include>
+		from 
+		<include refid="tableName"></include> f
+		order by f.CREATETIME desc
+	</select>
+	
+	<!-- 批量删除 -->
+	<delete id="deleteAll" parameterType="String">
+		update
+		<include refid="tableName"></include>
+		set STATE = -1
+		where 
+			ACTIVITY_ID in
+		<foreach item="item" index="index" collection="array" open="(" separator="," close=")">
+                 #{item}
+		</foreach>
+	</delete>
+	
+	<!-- fh313596790qq(青苔) -->
+	
+	<select id="listByParas" parameterType="pd" resultType="pd">
+		select
+		f.NAME,	
+		f.DAYTIME,
+		f.STARTTIME,	
+		f.ENDTIME,	
+		f.LIMITCOUNT,	
+		f.ADDRESS,	
+		f.DESCRIBES,	
+		f.STATE,	
+		f.SHOWSET,	
+		f.BGIMG,	
+		f.ERCODE,	
+		f.CREATETIME,
+		f.CREATOR,
+		f.CHECKTYPE,
+		f.FONTCOLOR,
+		f.BUTTONCOLOR,
+		f.ACTIVITY_ID
+		from
+		QD_ACTIVITY f
+		where 1=1
+		<if test="NAME != null and NAME != ''">
+			and NAME = #{NAME}
+		</if>
+		<if test="DAYTIME != null and DAYTIME != ''">
+			and DAYTIME = #{DAYTIME}
+		</if>
+		<if test="STARTTIME != null and STARTTIME != ''">
+			and STARTTIME = #{STARTTIME}
+		</if>
+		<if test="ENDTIME != null and ENDTIME != ''">
+			and ENDTIME = #{ENDTIME}
+		</if>
+		<if test="LIMITCOUNT != null">
+			and LIMITCOUNT = #{LIMITCOUNT}
+		</if>
+		<if test="ADDRESS != null and ADDRESS != ''">
+			and ADDRESS = #{ADDRESS}
+		</if>
+		<if test="DESCRIBES != null and DESCRIBES != ''">
+			and DESCRIBES = #{DESCRIBES}
+		</if>
+		<if test="STATE != null">
+			and STATE = #{STATE}
+		</if>
+		<if test="SHOWSET != null">
+			and SHOWSET = #{SHOWSET}
+		</if>
+		<if test="BGIMG != null and BGIMG != ''">
+			and BGIMG = #{BGIMG}
+		</if>
+		<if test="ERCODE != null and ERCODE != ''">
+			and ERCODE = #{ERCODE}
+		</if>
+		<if test="CHECKTYPE != null">
+			and CHECKTYPE = #{CHECKTYPE}
+		</if>
+		<if test="FONTCOLOR != null and FONTCOLOR != ''">
+			and FONTCOLOR = #{FONTCOLOR}
+		</if>
+		<if test="BUTTONCOLOR != null and BUTTONCOLOR != ''">
+			and BUTTONCOLOR = #{BUTTONCOLOR}
+		</if>
+	</select>
+</mapper>

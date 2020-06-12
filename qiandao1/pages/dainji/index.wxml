@@ -1,0 +1,6 @@
+<!-- <view class="but">点击签到</view> -->
+<!-- <view class="beijing"></view> -->
+<view class="page" style="background-image: url({{pageBackgroundColor}});background-size: cover;background-repeat: no-repeat;background-position:center;">
+  <!-- <button bindtap="changeColor" hover-class="none">点击修改背景颜色</button> -->
+  <view class="but" style="background:{{butbackground}};color:{{butcolor}};" bindtap="dianji">点击签到</view>
+</view>

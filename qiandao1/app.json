@@ -1,0 +1,17 @@
+{
+  "pages": [
+    "pages/dainji/index",
+    "pages/qiandaook/index",
+    "pages/shouquan/index",
+    "pages/ziliao/index",
+    "pages/index/index",
+    "pages/logs/logs"
+  ],
+  "window": {
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#F7CA6A",
+    "navigationBarTitleText": "WeChat",
+    "navigationBarTextStyle": "white"
+  },
+  "sitemapLocation": "sitemap.json"
+}

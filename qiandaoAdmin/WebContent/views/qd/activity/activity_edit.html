@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>FH Admin</title>
+    <!-- HTML5 Shim and Respond.js IE10 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 10]>
+		<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+		<script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+		<![endif]-->
+    <!-- Meta -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="author" content="FH Admin QQ313596790" />
+
+    <link rel="icon" href="../../../assets/images/favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="../../../assets/fonts/fontawesome/css/fontawesome-all.min.css">
+    <link rel="stylesheet" href="../../../assets/plugins/animation/css/animate.min.css">
+    <link rel="stylesheet" href="../../../assets/css/style.css">
+    
+    <!-- 日期插件 -->
+    <link rel="stylesheet" href="../../../assets/plugins/material-datetimepicker/css/bootstrap-material-datetimepicker.css">
+    
+    <!-- select插件 -->
+    <link rel="stylesheet" href="../../../assets/plugins/select2/css/select2.min.css">
+    <link rel="stylesheet" href="../../../assets/plugins/multi-select/css/multi-select.css">
+    
+    <!-- vue -->
+	<script src="../../../assets/js-vue/vue.js"></script>
+    <!--全局配置-->
+    <script src="../../../assets/js-v/config.js"></script>
+    
+    <!-- 颜色选择插件 -->
+	<link rel="stylesheet" href="../../../assets/colpick/css/colpick.css" type="text/css"/>
+
+</head>
+
+<body style="background-color: white">
+    
+    <!-- [加载状态 ] start -->
+    <div class="loader-bg">
+        <div class="loader-track">
+            <div class="loader-fill"></div>
+        </div>
+    </div>
+    <!-- [ 加载状态  ] End -->
+
+    <!-- [ 主内容区 ] start -->
+        <div class="pcoded-wrapper" id="app">
+            <div class="pcoded-content">
+                <div class="pcoded-inner-content">
+                    <div class="main-body">
+                        <div class="page-wrapper">
+                            <!-- [ Main Content ] start -->
+                            <div class="row">
+					
+								<div style="width: 100%;">
+									<div id="showform">
+										<div class="input-group input-group-sm mb-3" style="margin-top: -10px;">
+		                                    <div class="input-group-prepend">
+		                                        <span class="input-group-text" style="width: 79px;"><span style="width: 100%;">活动名</span></span>
+		                                    </div>
+		                                    <input type="text" class="form-control" ref="NAME" id="NAME" v-model="pd.NAME" maxlength="200" placeholder="这里输入活动名" title="活动名">
+		                                </div>
+							            <div class="input-group input-group-sm mb-3" style="margin-top: -10px;">
+		                                    <div class="input-group-prepend">
+		                                        <span class="input-group-text" style="width: 79px;"><span style="width: 100%;">活动日期</span></span>
+		                                    </div>
+		                                    <input type="text" class="form-control date" ref="DAYTIME" id="DAYTIME" v-model="pd.DAYTIME" maxlength="200" placeholder="这里输入活动日期" title="活动日期">
+		                                </div>
+							            <div class="input-group input-group-sm mb-3" style="margin-top: -10px;">
+		                                    <div class="input-group-prepend">
+		                                        <span class="input-group-text" style="width: 79px;"><span style="width: 100%;">开始时间</span></span>
+		                                    </div>
+		                                    <input type="time" class="form-control" ref="STARTTIME" id="STARTTIME" maxlength="32" placeholder="这里输入开始时间" title="开始时间">
+		                                </div>
+							            <div class="input-group input-group-sm mb-3" style="margin-top: -10px;">
+		                                    <div class="input-group-prepend">
+		                                        <span class="input-group-text" style="width: 79px;"><span style="width: 100%;">结束时间</span></span>
+		                                    </div>
+		                                    <input type="time" class="form-control" ref="ENDTIME" id="ENDTIME" maxlength="32" placeholder="这里输入结束时间" title="结束时间">
+		                                </div>
+		                                <div class="input-group input-group-sm mb-3" id="SHOWSETs">
+											<select class="js-example-placeholder-multiple col-sm-12" ref="SHOWSET" id="SHOWSET" data-placeholder="请选择单位职位是否显示">
+												<option value=""></option>
+												<template v-for="data in showsetList">
+													<template v-if="data.sid == pd.SHOWSET">
+													<option v-bind:value="data.sid" selected>{{data.sName}}</option>
+													</template>
+													<template v-else>
+													<option v-bind:value="data.sid">{{data.sName}}</option>
+													</template>
+												</template>
+											</select>
+							            </div>
+							            <div class="input-group input-group-sm mb-3" style="margin-top: -10px;">
+		                                    <div class="input-group-prepend">
+		                                        <span class="input-group-text" style="width: 79px;"><span style="width: 100%;">背景图</span></span>
+		                                    </div>
+		                                    <input type="text" class="form-control" ref="BGIMG" id="BGIMG" v-model="pd.BGIMG" maxlength="500" placeholder="活动背景图" title="活动背景图" readonly="readonly">
+		                                </div>
+		                                <div style="margin-top: -10px;margin-bottom: 20px">
+		                                	背景图：<img style="width: 150px" v-bind:src="pd.BGIMG" id="bgimg">
+		                                	<input type="file" id="bgfile">
+		                                	<button onclick="uploadImg()">确认图片后上传</button>
+		                                </div>
+		                                <template v-if="null != pd.ACTIVITY_ID">
+							            <div class="input-group input-group-sm mb-3" style="margin-top: -10px;">
+		                                    <div class="input-group-prepend">
+		                                        <span class="input-group-text" style="width: 79px;"><span style="width: 100%;">二维码</span></span>
+		                                    </div>
+		                                    <input type="text" class="form-control" ref="ERCODE" id="ERCODE" v-model="pd.ERCODE" maxlength="500" placeholder="这里输入二维码" title="二维码" readonly="readonly">
+		                                </div>
+		                                <div style="margin-top: -10px;margin-bottom: 20px">
+		                                	二维码：<img style="width: 150px" v-bind:src="pd.ERCODE">
+		                                </div>
+										</template>
+										<div class="input-group input-group-sm mb-3" style="margin-top: -10px;">
+		                                    <div class="input-group-prepend">
+		                                        <span class="input-group-text" style="width: 79px;"><span style="width: 100%;">字体颜色</span></span>
+		                                    </div>
+		                                    <input type="text" class="form-control" ref="FONTCOLOR" id="FONTCOLOR" readonly="readonly" v-model="pd.FONTCOLOR" maxlength="200" placeholder="点击这里选择字体颜色" title="字体颜色">
+		                                    <button id="picker">选择颜色</button>
+		                                </div>
+										<div class="input-group input-group-sm mb-3" style="margin-top: -10px;">
+		                                    <div class="input-group-prepend">
+		                                        <span class="input-group-text" style="width: 79px;"><span style="width: 100%;">按钮颜色</span></span>
+		                                    </div>
+		                                    <input type="text" class="form-control" ref="BUTTONCOLOR" id="BUTTONCOLOR" readonly="readonly" v-model="pd.BUTTONCOLOR" maxlength="200" placeholder="点击这里选择字体颜色" title="字体颜色">
+		                                    <button id="picker1">选择颜色</button>
+		                                </div>
+		                                <div class="input-group input-group-sm mb-3" id="CHECKTYPEs">
+											<select class="js-example-placeholder-multiple col-sm-12" ref="CHECKTYPE" id="CHECKTYPE" data-placeholder="请选择验证方式">
+												<option value=""></option>
+												<template v-for="data in checktypeList">
+													<template v-if="data.cid == pd.CHECKTYPE">
+													<option v-bind:value="data.cid" selected>{{data.cname}}</option>
+													</template>
+													<template v-else>
+													<option v-bind:value="data.cid">{{data.cname}}</option>
+													</template>
+												</template>
+											</select>
+							            </div>
+							            <div class="input-group" style="margin-top:10px;background-color: white" >
+							            	<span style="width: 100%;text-align: center;">
+							            		<a class="btn btn-light btn-sm" v-on:click="save">保存</a>
+							            		<a class="btn btn-light btn-sm" onclick="top.Dialog.close()">取消</a>
+							            	</span>
+							            </div>
+							       </div>
+						           <!-- [加载状态 ] start -->
+								    <div id="jiazai" style="display:none;margin-top:50px;">
+								    	<div class="d-flex justify-content-center">
+	                                        <div class="spinner-border" style="width: 3rem; height: 3rem;" role="status">
+                                                <span class="sr-only">Loading...</span>
+                                            </div>
+                                        </div>
+                                    </div>
+								    <!-- [ 加载状态  ] End -->
+								</div>
+	    
+                            </div>
+                            <!-- [ Main Content ] end -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    <!-- [ 主内容区 ] end -->
+    
+<script type="text/javascript" src="../../../assets/js/jquery-1.7.2.js"></script>
+    
+<!-- 颜色选择插件 -->
+<script src="../../../assets/colpick/js/colpick.js" type="text/javascript"></script>
+    
+<script type="text/javascript" src="../../../assets/js/pre-loader.js"></script>
+<script src="../../../assets/plugins/sweetalert/js/sweetalert.min.js"></script>
+
+<!-- 日期插件 -->
+<script src="../../../assets/js/pages/moment-with-locales.min.js"></script>
+<script src="../../../assets/plugins/material-datetimepicker/js/bootstrap-material-datetimepicker.js"></script>
+<script src="../../../assets/js/pages/form-picker-custom.js"></script>
+
+<!-- select插件 -->
+<script src="../../../assets/plugins/select2/js/select2.full.min.js"></script>
+<script src="../../../assets/plugins/multi-select/js/jquery.quicksearch.js"></script>
+<script src="../../../assets/plugins/multi-select/js/jquery.multi-select.js"></script>
+<script src="../../../assets/js/pages/form-select-custom.js"></script>
+
+<!-- 表单验证提示 -->
+<script src="../../../assets/js/jquery.tips.js"></script>
+
+<script type="text/javascript">
+var vm = new Vue({
+	el: '#app',
+	
+	data:{
+		ACTIVITY_ID: '',	//主键ID
+		pd: [],						//存放字段参数
+		msg:'add',
+		showsetList: [
+			{
+				sid : "0",
+				sName : "不显示"
+			},
+			{
+				sid : "1",
+				sName : "显示"
+			}
+		],
+		checktypeList: [
+			{
+				cid : "0",
+				cname : "不验证"
+			},
+			{
+				cid : "1",
+				cname : "验证姓名"
+			},
+			{
+				cid : "2",
+				cname : "验证电话"
+			},
+			{
+				cid : "3",
+				cname : "验证姓名和电话"
+			}
+		]
+    },
+	
+	methods: {
+        //初始执行
+        init() {
+        	var FID = this.getUrlKey('FID');	//当接收过来的FID不为null时,表示此页面是修改进来的
+        	if(null != FID){
+        		this.msg = 'edit';
+        		this.ACTIVITY_ID = FID;
+        		this.getData();
+        	}
+        	setTimeout(function(){
+        		vm.getDict();
+            },200);
+        },
+        
+        //去保存
+    	save: function (){
+    		
+			if(this.pd.NAME == '' || this.pd.NAME == undefined){
+				$("#NAME").tips({
+					side:3,
+		            msg:'请输入活动名',
+		            bg:'#AE81FF',
+		            time:2
+		        });
+				this.pd.NAME = '';
+				this.$refs.NAME.focus();
+			return false;
+			}
+			this.pd.DAYTIME = $("#DAYTIME").val();
+			if(this.pd.DAYTIME == '' || this.pd.DAYTIME == undefined){
+				$("#DAYTIME").tips({
+					side:3,
+		            msg:'请输入活动日期',
+		            bg:'#AE81FF',
+		            time:2
+		        });
+				this.pd.DAYTIME = '';
+				this.$refs.DAYTIME.focus();
+			return false;
+			}
+			this.pd.STARTTIME = $("#STARTTIME").val();
+			if(this.pd.STARTTIME == '' || this.pd.STARTTIME == undefined){
+				$("#STARTTIME").tips({
+					side:3,
+		            msg:'请输入开始时间',
+		            bg:'#AE81FF',
+		            time:2
+		        });
+				this.pd.STARTTIME = '';
+				this.$refs.STARTTIME.focus();
+			return false;
+			}
+			this.pd.ENDTIME = $("#ENDTIME").val();
+			if(this.pd.ENDTIME == '' || this.pd.ENDTIME == undefined){
+				$("#ENDTIME").tips({
+					side:3,
+		            msg:'请输入结束时间',
+		            bg:'#AE81FF',
+		            time:2
+		        });
+				this.pd.ENDTIME = '';
+				this.$refs.ENDTIME.focus();
+			return false;
+			}
+			var SHOWSET = $("#SHOWSET").val();
+			if(SHOWSET == '' || SHOWSET == undefined){
+				$("#SHOWSET").tips({
+					side:3,
+		            msg:'请选择单位职位是否显示',
+		            bg:'#AE81FF',
+		            time:2
+		        });
+			return false;
+			}
+			var BGIMG = $("#BGIMG").val();
+			if(BGIMG == '' || BGIMG == undefined){
+				$("#BGIMG").tips({
+					side:3,
+		            msg:'请输入活动背景图',
+		            bg:'#AE81FF',
+		            time:2
+		        });
+			return false;
+			}
+			var CHECKTYPE = $("#CHECKTYPE").val();
+			console.log("CHECKTYPE::::::::::::::::::" + CHECKTYPE);
+			if(CHECKTYPE == '' || CHECKTYPE == undefined){
+				$("#CHECKTYPE").tips({
+					side:3,
+		            msg:'请选择验证方式',
+		            bg:'#AE81FF',
+		            time:2
+				});
+			}
+			var FONTCOLOR = $("#FONTCOLOR").val();
+			console.log("FONTCOLOR::::::::::::::::::" + FONTCOLOR);
+			if(FONTCOLOR == '' || FONTCOLOR == undefined){
+				$("#FONTCOLOR").tips({
+					side:3,
+		            msg:'请选择字体颜色',
+		            bg:'#AE81FF',
+		            time:2
+				});
+			}
+			var BUTTONCOLOR = $("#BUTTONCOLOR").val();
+			if(BUTTONCOLOR == '' || BUTTONCOLOR == undefined){
+				$("#BUTTONCOLOR").tips({
+					side:3,
+		            msg:'请选择字体颜色',
+		            bg:'#AE81FF',
+		            time:2
+				});
+			}
+    		
+    		$("#showform").hide();
+    		$("#jiazai").show();
+    		
+            //发送 post 请求提交保存
+            $.ajax({
+	            	xhrFields: {
+	                    withCredentials: true
+	                },
+					type: "POST",
+					url: httpurl+'activity/'+this.msg,
+			    	data: {ACTIVITY_ID:this.ACTIVITY_ID,
+				    NAME:this.pd.NAME,
+				    DAYTIME:this.pd.DAYTIME,
+				    STARTTIME:this.pd.STARTTIME,
+				    ENDTIME:this.pd.ENDTIME,
+				    SHOWSET:SHOWSET,
+				    BGIMG:BGIMG,
+				    CHECKTYPE:CHECKTYPE,
+				    FONTCOLOR:FONTCOLOR,
+				    BUTTONCOLOR:BUTTONCOLOR,
+			    	tm:new Date().getTime()},
+					dataType:"json",
+					success: function(data){
+                        if("success" == data.result){
+                        	swal("", "保存成功", "success");
+                        	setTimeout(function(){
+                        		top.Dialog.close();//关闭弹窗
+                            },1000);
+                        }else if ("exception" == data.result){
+                        	showException("活动信息",data.exception);//显示异常
+                        	$("#showform").show();
+                    		$("#jiazai").hide();
+                        }
+                    }
+				}).done().fail(function(){
+                   swal("登录失效!", "请求服务器无响应，稍后再试", "warning");
+                   $("#showform").show();
+           		   $("#jiazai").hide();
+                });
+    	},
+    	
+    	//根据主键ID获取数据
+    	getData: function(){
+    		//发送 post 请求
+            $.ajax({
+            	xhrFields: {
+                    withCredentials: true
+                },
+				type: "POST",
+				url: httpurl+'activity/goEdit',
+		    	data: {ACTIVITY_ID:this.ACTIVITY_ID,tm:new Date().getTime()},
+				dataType:"json",
+				success: function(data){
+                     if("success" == data.result){
+                     	vm.pd = data.pd;							//参数map
+						$("#STARTTIME").val(data.pd.STARTTIME);
+						$("#ENDTIME").val(data.pd.ENDTIME);
+                     }else if ("exception" == data.result){
+                     	showException("活动信息",data.exception);	//显示异常
+                     	$("#showform").show();
+                 		$("#jiazai").hide();
+                     }
+                  }
+			}).done().fail(function(){
+                  swal("登录失效!", "请求服务器无响应，稍后再试", "warning");
+                  $("#showform").show();
+          		  $("#jiazai").hide();
+               });
+    	},
+    	
+    	//获取数据字典数据
+		getDict: function (){
+		},
+    	
+    	//根据url参数名称获取参数值
+        getUrlKey: function (name) {
+            return decodeURIComponent(
+                (new RegExp('[?|&]' + name + '=' + '([^&;]+?)(&|#|;|$)').exec(location.href) || [, ""])[1].replace(/\+/g, '%20')) || null;
+        }
+        
+	},
+	
+	mounted(){
+        this.init();
+    }
+})
+
+// 图片上传
+function uploadImg(){
+	var sUrl = $("#BGIMG").val();
+	var imgfile = $("#bgfile").val();
+	if(imgfile != '' && imgfile != null && imgfile.length > 0){
+		var formData = new FormData();
+		formData.append("file", $("#bgfile")[0].files[0]);
+		$.ajax({
+			xhrFields: {
+            	withCredentials: true
+        	},
+			type: "POST",
+			url: httpurl+'utils/tools/fileUpload',
+		　　　data : formData,
+		　　　processData : false,
+		　　　contentType : false,
+			success: function(data){
+                if(0 == data.msgType){
+                	$("#BGIMG").val(data.returnMsg);
+                	$("#bgimg").attr("src",data.returnMsg);
+                }else {
+                	swal("请求失败", data.errMsg, "warning");
+                    $("#showform").show();
+            		$("#jiazai").hide();
+                }
+            }
+		}).done().fail(function(){
+           swal("登录失效!", "请求服务器无响应，稍后再试", "warning");
+           $("#showform").show();
+   		   $("#jiazai").hide();
+        });
+	}else{
+    	swal("发生错误", "请选择图片", "warning");
+    	$("#showform").show();
+    	$("#jiazai").hide();
+    }
+}
+
+$('#picker').colpick({
+    flat:false,
+    layout:'hex',
+    submit:0,
+    onChange: function (color, color2) {
+    	$("#FONTCOLOR").val('#' + color2);
+    }
+});
+
+$('#picker1').colpick({
+    flat:false,
+    layout:'hex',
+    submit:0,
+    onChange: function (color, color2) {
+    	$("#BUTTONCOLOR").val('#' + color2);
+    }
+});
+				
+</script>
+
+</body>
+</html>

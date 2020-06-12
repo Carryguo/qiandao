@@ -1,0 +1,27 @@
+<!--pages/mine/mate_selection_data/mate_selection_data.wxml-->
+<view class="page" style="background-image: url({{pageBackgroundColor}});background-size: cover;background-repeat: no-repeat;background-position:center;">
+  <!-- <button bindtap="changeColor" hover-class="none">点击修改背景颜色</button> -->
+  <view class="chunk-box">
+    <view class="chunk">
+      姓名
+      <input class="authen-ipt" placeholder="请输入姓名" value="" bindinput='name'></input>
+    </view>
+    <view class="chunk">
+      电话
+      <input class="authen-ipt" placeholder="请输入电话" value="" type="number" bindinput="phone"></input>
+    </view>
+    <block wx:if="{{status !=0}}">
+      <view class="chunk">
+        单位
+        <input class="authen-ipt" placeholder="请输入单位" value="" type="text" bindinput="danwei"></input>
+      </view>
+      <view class="chunk">
+        职务
+        <input class="authen-ipt" placeholder="请输入职务" value="" type="text" bindinput="zhiwu"></input>
+      </view>
+    </block>
+  </view>
+
+  <view class="foot-btn" style="background:{{butbackground}};color: {{butcolor}};" bindtap="tijiao">提交</view>
+  <view class="zhanwei"></view>
+</view>

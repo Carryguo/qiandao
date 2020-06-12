@@ -1,0 +1,17 @@
+
+SET FOREIGN_KEY_CHECKS=0;
+
+-- ----------------------------
+-- Table structure for `QD_SIGNUSER`
+-- ----------------------------
+DROP TABLE IF EXISTS `QD_SIGNUSER`;
+CREATE TABLE `QD_SIGNUSER` (
+ 		`SIGNUSER_ID` varchar(100) NOT NULL,
+		`ACTIVITY_ID` varchar(200) DEFAULT NULL COMMENT '活动ID',
+		`DEPARTMENT` varchar(200) DEFAULT NULL COMMENT '部门',
+		`POSOTIONS` varchar(200) DEFAULT NULL COMMENT '职位',
+		`NAME` varchar(200) DEFAULT NULL COMMENT '姓名',
+		`PHONE` varchar(200) DEFAULT NULL COMMENT '电话',
+		`STATE` varchar(200) DEFAULT NULL COMMENT '状态',
+  		PRIMARY KEY (`SIGNUSER_ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;

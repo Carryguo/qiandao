@@ -1,0 +1,10 @@
+<view class="shou">
+    <image class="shou_img" src="../../images/shouquan01.png"></image>
+    <view class="shou_p1">申请获得你的公开信息（昵称，头像等）</view>
+    <view class="bot-box">
+        <view class="bot" bindtap="jujue">拒绝授权</view>
+        <!-- <button bindgetuserinfo="getUserInfo" class="shou_p2" openType="getUserInfo" wx:if="{{but==true}}">微信授权登录</button> -->
+        <button bindgetuserinfo="getUserInfo" class="shou_p2" openType="getUserInfo">微信授权登录</button>
+        <!-- <button bindtap="errorbtn" class="shou_p2" wx:if="{{but==false}}">微信授权登录</button> -->
+    </view>
+</view>

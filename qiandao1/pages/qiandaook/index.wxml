@@ -1,0 +1,11 @@
+<view class="page" style="background-image: url({{pageBackgroundColor}});background-size: cover;background-repeat: no-repeat;background-position:center;">
+  <view class='heard'>
+    <image class="heardimg" src="{{heardimg}}"></image>
+  </view>
+  <view class="name">{{NAME}}</view>
+  <view class="name top ">恭喜你签到成功</view>
+  <view class="haotai top">{{SEATNO}}</view>
+  <view class="weizhi top">你是第
+    <text class="">{{QDORDER}}</text> 位签到</view>
+  <view class="shijian">{{QDTIME}}</view>
+</view>

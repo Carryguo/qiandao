@@ -1,0 +1,264 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.fh.mapper.dsno1.qd.UserinfoMapper">
+
+	<!--表名 -->
+	<sql id="tableName">
+		QD_USERINFO
+	</sql>
+
+	<!--数据字典表名 -->
+	<sql id="dicTableName">
+		SYS_DICTIONARIES
+	</sql>
+
+	<!-- 字段 -->
+	<sql id="Field">
+		f.OPENID,
+		f.ACTIVITY_ID,
+		f.NICKNAME,
+		f.NAME,
+		f.PHONE,
+		f.DEPARTMENT,
+		f.POSITIONS,
+		f.FACEICON,
+		f.QDTIME,
+		f.QDORDER,
+		f.SEATNO,
+		f.STATE,
+		f.USERINFO_ID
+	</sql>
+
+	<!-- 字段用于新增 -->
+	<sql id="Field2">
+		OPENID,
+		ACTIVITY_ID,
+		NICKNAME,
+		NAME,
+		PHONE,
+		DEPARTMENT,
+		POSITIONS,
+		FACEICON,
+		QDTIME,
+		QDORDER,
+		SEATNO,
+		STATE,
+		USERINFO_ID
+	</sql>
+
+	<!-- 字段值 -->
+	<sql id="FieldValue">
+		#{OPENID},
+		#{ACTIVITY_ID},
+		#{NICKNAME},
+		#{NAME},
+		#{PHONE},
+		#{DEPARTMENT},
+		#{POSITIONS},
+		#{FACEICON},
+		#{QDTIME},
+		#{QDORDER},
+		#{SEATNO},
+		#{STATE},
+		#{USERINFO_ID}
+	</sql>
+
+	<!-- 新增 -->
+	<insert id="save" parameterType="pd">
+		insert into
+		<include refid="tableName"></include>
+		(
+		<include refid="Field2"></include>
+		) values (
+		<include refid="FieldValue"></include>
+		)
+	</insert>
+
+	<!-- 删除 -->
+	<delete id="delete" parameterType="pd">
+		delete from
+		<include refid="tableName"></include>
+		where
+		USERINFO_ID = #{USERINFO_ID}
+	</delete>
+
+	<!-- 修改 -->
+	<update id="edit" parameterType="pd">
+		update
+		<include refid="tableName"></include>
+		set
+		<if test="OPENID != null and OPENID != ''">
+			OPENID = #{OPENID},
+		</if>
+		<if test="ACTIVITY_ID != null and ACTIVITY_ID != ''">
+			ACTIVITY_ID = #{ACTIVITY_ID},
+		</if>
+		<if test="NICKNAME != null and NICKNAME != ''">
+			NICKNAME = #{NICKNAME},
+		</if>
+		<if test="NAME != null and NAME != ''">
+			NAME = #{NAME},
+		</if>
+		<if test="PHONE != null and PHONE !=''">
+			PHONE = #{PHONE},
+		</if>
+		<if test="DEPARTMENT != null and DEPARTMENT != ''">
+			DEPARTMENT = #{DEPARTMENT},
+		</if>
+		<if test="POSITIONS != null and POSITIONS != ''">
+			POSITIONS = #{POSITIONS},
+		</if>
+		<if test="FACEICON != null and FACEICON != ''">
+			FACEICON = #{FACEICON},
+		</if>
+		<if test="QDTIME != null">
+			QDTIME = #{QDTIME},
+		</if>
+		<if test="QDORDER != null">
+			QDORDER = #{QDORDER},
+		</if>
+		<if test="SEATNO != null and SEATNO != ''">
+			SEATNO = #{SEATNO},
+		</if>
+		<if test="STATE != null">
+			STATE = #{STATE},
+		</if>
+		USERINFO_ID = USERINFO_ID
+		where
+		USERINFO_ID = #{USERINFO_ID}
+	</update>
+
+	<!-- 通过ID获取数据 -->
+	<select id="findById" parameterType="pd" resultType="pd">
+		select
+		<include refid="Field"></include>
+		from
+		<include refid="tableName"></include>
+		f
+		where
+		f.USERINFO_ID = #{USERINFO_ID}
+	</select>
+
+	<!-- 列表 -->
+	<select id="datalistPage" parameterType="page" resultType="pd">
+		select
+		<include refid="Field"></include>,
+		qa.NAME AS ACTIVITY_NAME
+		from
+		<include refid="tableName"></include>
+		f
+		left join qd_activity qa on f.ACTIVITY_ID = qa.ACTIVITY_ID
+		where 1=1
+		<if test="pd.KEYWORDS != null and pd.KEYWORDS != ''"><!-- 关键词检索 -->
+			and
+			(
+				f.NAME LIKE CONCAT(CONCAT('%', #{pd.KEYWORDS}),'%')
+				or qa.NAME LIKE CONCAT(CONCAT('%', #{pd.KEYWORDS}),'%')
+			)
+		</if>
+		<if test="pd.ACTIVITY_ID != null and pd.ACTIVITY_ID != ''">
+			and f.ACTIVITY_ID = #{pd.ACTIVITY_ID}
+		</if>
+		and qa.STATE != -1
+		order by f.QDTIME desc
+	</select>
+
+	<!-- 列表(全部) -->
+	<select id="listAll" parameterType="pd" resultType="pd">
+		select
+		<include refid="Field"></include>,
+		qa.NAME AS ACTIVITY_NAME
+		from
+		<include refid="tableName"></include>
+		f
+		left join qd_activity qa on f.ACTIVITY_ID = qa.ACTIVITY_ID
+		where 1=1
+		<if test="KEYWORDS != null and KEYWORDS != ''"><!-- 关键词检索 -->
+			and
+			(
+				f.NAME LIKE CONCAT(CONCAT('%', #{KEYWORDS}),'%')
+				or qa.NAME LIKE CONCAT(CONCAT('%', #{KEYWORDS}),'%')
+			)
+		</if>
+		<if test="ACTIVITY_ID != null and ACTIVITY_ID != ''">
+			and f.ACTIVITY_ID = #{ACTIVITY_ID}
+		</if>
+		and qa.STATE != -1
+		order by f.QDTIME desc
+	</select>
+
+	<!-- 批量删除 -->
+	<delete id="deleteAll" parameterType="String">
+		delete from
+		<include refid="tableName"></include>
+		where
+		USERINFO_ID in
+		<foreach item="item" index="index" collection="array" open="("
+			separator="," close=")">
+			#{item}
+		</foreach>
+	</delete>
+
+	<!-- fh313596790qq(青苔) -->
+
+	<!-- 条件查询签到用户 -->
+	<select id="findByParas" parameterType="pd" resultType="pd">
+		select
+		qu.OPENID,
+		qu.ACTIVITY_ID,
+		qu.NICKNAME,
+		qu.NAME,
+		qu.PHONE,
+		qu.DEPARTMENT,
+		qu.POSITIONS,
+		qu.FACEICON,
+		qu.QDTIME,
+		qu.QDORDER,
+		qu.SEATNO,
+		qu.STATE,
+		qu.USERINFO_ID,
+		qa.NAME AS ACTIVITY_NAME
+		from
+		QD_USERINFO qu
+		left join
+		QD_ACTIVITY qa
+		on qu.ACTIVITY_ID = qa.ACTIVITY_ID
+		where 1=1
+		<if test="OPENID != null and OPENID != ''">
+			and qu.OPENID = #{OPENID}
+		</if>
+		<if test="ACTIVITY_ID != null and ACTIVITY_ID != ''">
+			and qu.ACTIVITY_ID = #{ACTIVITY_ID}
+		</if>
+		<if test="NICKNAME != null and NICKNAME != ''">
+			and qu.NICKNAME = #{NICKNAME}
+		</if>
+		<if test="NAME != null and NAME != ''">
+			and qu.NAME = #{NAME}
+		</if>
+		<if test="PHONE != null and PHONE != ''">
+			and qu.PHONE = #{PHONE}
+		</if>
+		<if test="DEPARTMENT != null and DEPARTMENT != ''">
+			and qu.DEPARTMENT = #{DEPARTMENT}
+		</if>
+		<if test="POSITIONS != null and POSITIONS != ''">
+			and qu.POSITIONS = #{POSITIONS}
+		</if>
+		<if test="FACEICON != null and FACEICON != ''">
+			and qu.FACEICON = #{FACEICON}
+		</if>
+		<if test="QDTIME != null">
+			and qu.QDTIME = #{QDTIME}
+		</if>
+		<if test="QDORDER != null">
+			and qu.QDORDER = #{QDORDER}
+		</if>
+		<if test="SEATNO != null and SEATNO != ''">
+			and qu.SEATNO = #{SEATNO}
+		</if>
+		<if test="STATE != null and STATE != ''">
+			and qu.STATE = #{STATE}
+		</if>
+	</select>
+</mapper>
